@@ -95,7 +95,7 @@ router.post("/api/order", async (ctx, next) => {
   const {
     owner: { phone, address },
     items,
-  } = ctx.request.body;
+  } = JSON.parse(ctx.request.body);
   if (typeof phone !== "string") {
     return fortune(ctx, "Bad Request: Phone", 400);
   }
@@ -106,14 +106,14 @@ router.post("/api/order", async (ctx, next) => {
     return fortune(ctx, "Bad Request: Items", 400);
   }
   if (
-    !items.every(({ id, price, count }) => {
+    !items.every(({ id, price, countProducts }) => {
       if (typeof id !== "number" || id <= 0) {
         return false;
       }
       if (typeof price !== "number" || price <= 0) {
         return false;
       }
-      if (typeof count !== "number" || count <= 0) {
+      if (typeof countProducts !== "number" || countProducts <= 0) {
         return false;
       }
       return true;
